@@ -7,7 +7,6 @@ require 'rubygems'
 require 'sinatra'
 require 'activesupport'
 require 'yaml'
-require 'cgi'
 
 require 'lib/restful_captcha/image'
 require 'lib/restful_captcha/captcha'

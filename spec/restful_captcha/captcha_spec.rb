@@ -58,6 +58,10 @@ describe RestfulCaptcha::Captcha do
     reconstructed.should == @captcha
   end
 
+  it "should return nil if there is a problem interpreting an identifier" do
+    RestfulCaptcha::Captcha.find('457474574625231').should be_nil
+  end
+
   it "should be displayable as an image" do
     RestfulCaptcha::Image.should_receive(:build).with(:text => "foo")
     @captcha.image

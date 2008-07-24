@@ -13,7 +13,7 @@ describe 'RestfulCaptcha' do
     @example = RestfulCaptcha::Captcha.new(:text => "foo", :secret => "wibble")
   end
   
-  describe "when a CAPTCHA is requested" do
+  describe "when a new CAPTCHA is requested" do
 
     def reconstructed_captcha(response=@response)
       RestfulCaptcha::Captcha.find(response.body)
@@ -92,9 +92,14 @@ describe 'RestfulCaptcha' do
       captcha.should_not be_nil
     end
 
+    it "should respond with a 'resource not found' error if the captcha can't be found" do
+      get_it 'http://image/475447486856476325241'
+      @response.status.should == 404
+    end
+
   end
 
-  describe "when verifying an answer" do
+  describe "when answer validity is requested" do
 
     describe "if the answer is correct" do
 
@@ -151,6 +156,11 @@ describe 'RestfulCaptcha' do
     it "should include the given answer in the response" do
       get_it "/captcha/#{@example.identifier}/#{@example[:text].upcase}"
       YAML::load(@response.body)['answer'].should == @example[:text].upcase
+    end
+
+    it "should respond with a 'resource not found' error if the captcha can't be found" do
+      get_it '/captcha/547574599891223/foo'
+      @response.status.should == 404
     end
 
   end
