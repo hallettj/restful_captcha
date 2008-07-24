@@ -16,7 +16,7 @@ describe 'RestfulCaptcha' do
   describe "when a CAPTCHA is requested" do
 
     def reconstructed_captcha(response=@response)
-      RestfulCaptcha::Captcha.load(response.body)
+      RestfulCaptcha::Captcha.find(response.body)
     end
 
     it "should respond with a CAPTCHA identifier" do

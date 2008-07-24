@@ -44,7 +44,7 @@ describe RestfulCaptcha::Captcha do
   it "should escape special characters in its identifier so that it can be placed in a URL"
 
   it "should be able to reconstruct a CAPTCHA from its identifier" do
-    reconstructed = RestfulCaptcha::Captcha.load(@captcha.identifier)
+    reconstructed = RestfulCaptcha::Captcha.find(@captcha.identifier)
     reconstructed[:text].should == @captcha[:text]
     reconstructed[:secret].should == @captcha[:secret]
   end

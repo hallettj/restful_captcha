@@ -15,7 +15,7 @@ module RestfulCaptcha
       @secret = options[:secret]
     end
 
-    def self.load(identifier)
+    def self.find(identifier)
       recipe = YAML::load(decrypt(Zlib::Inflate.inflate(base64_decode(URI.unescape(identifier)))))
       Captcha.new(recipe)
     rescue

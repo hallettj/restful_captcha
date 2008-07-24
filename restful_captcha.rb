@@ -18,7 +18,7 @@ get '/captcha' do
 end
 
 get '/image/:identifier' do
-  @captcha = RestfulCaptcha::Captcha.load(params[:identifier])
+  @captcha = RestfulCaptcha::Captcha.find(params[:identifier])
   if @captcha.nil?
     throw :halt, [404, "Image not found"]
   end
@@ -26,7 +26,7 @@ get '/image/:identifier' do
 end
 
 get '/captcha/:identifier/:answer' do
-  @captcha = RestfulCaptcha::Captcha.load(params[:identifier])
+  @captcha = RestfulCaptcha::Captcha.find(params[:identifier])
 
   if @captcha.nil?
     throw :halt, [404, "Captcha not found"]
