@@ -79,6 +79,7 @@ describe 'RestfulCaptcha' do
 
     it "should respond with an image" do
       get_it "/image/#{@example.identifier}"
+      @response.status.should == 200
       @response.headers['Content-Type'].should == 'image/png'
       @response.headers['Content-Transfer-Encoding'].should == 'binary'
       @response.body.should_not be_empty

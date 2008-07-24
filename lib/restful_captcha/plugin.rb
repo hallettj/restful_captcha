@@ -8,7 +8,7 @@ require 'yaml'
 module RestfulCaptcha
   module Plugin
 
-    CAPTCHA_HOST = "captcha.localhost"
+    CAPTCHA_HOST = "localhost:4567"
 
     def self.included(base)
       base.helper_method :captcha_image_url
@@ -17,7 +17,7 @@ module RestfulCaptcha
     def reset_captcha
       url = URI.parse("http://#{CAPTCHA_HOST}/")
       res = Net::HTTP.start(url.host, url.port) do |http|
-        http.get('/captcha?color=darkblue&background_color=yellow&font_family=timesnewroman&font_weight=bold')
+        http.get('/captcha?color=darkblue&background_color=yellow&font_family=times&font_weight=bold')
       end
       captcha = res.body
       session[:captcha] = captcha

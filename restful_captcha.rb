@@ -7,7 +7,7 @@ require 'rubygems'
 require 'sinatra'
 require 'activesupport'
 require 'yaml'
-require 'uri'
+require 'cgi'
 
 require 'lib/restful_captcha/image'
 require 'lib/restful_captcha/captcha'
@@ -33,7 +33,7 @@ get '/captcha/:identifier/:answer' do
   end
 
   response = { 
-    "identifier" => URI.escape(params[:identifier]),
+    "identifier" => CGI::escape(params[:identifier]),
     "answer" => params[:answer]
   }
 
