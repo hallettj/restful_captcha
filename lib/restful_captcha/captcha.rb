@@ -1,6 +1,6 @@
 require 'activesupport'
 require 'crypt/rijndael'
-require 'cgi'
+require 'uri'
 
 require File.expand_path(File.dirname(__FILE__) + '/../core_extensions.rb')
 
@@ -16,14 +16,16 @@ module RestfulCaptcha
     end
 
     def self.load(identifier)
-      recipe = YAML::load(decrypt(Zlib::Inflate.inflate(base64_decode(identifier))))
+      recipe = YAML::load(decrypt(Zlib::Inflate.inflate(base64_decode(URI.unescape(identifier)))))
       Captcha.new(recipe)
+    rescue
+      nil
     end
 
     def identifier
       identifier_params = @recipe.reject { |k,v| v.nil? }.stringify_keys
       identifier_params[:secret] = @secret unless @secret.blank?
-      CGI::escape(base64_encode(Zlib::Deflate.deflate(encrypt(identifier_params.to_yaml))))
+      URI.escape(base64_encode(Zlib::Deflate.deflate(encrypt(identifier_params.to_yaml))))
     end
 
     def image

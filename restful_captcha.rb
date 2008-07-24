@@ -7,6 +7,7 @@ require 'rubygems'
 require 'sinatra'
 require 'activesupport'
 require 'yaml'
+require 'uri'
 
 require 'lib/restful_captcha/image'
 require 'lib/restful_captcha/captcha'
@@ -18,14 +19,21 @@ end
 
 get '/image/:identifier' do
   @captcha = RestfulCaptcha::Captcha.load(params[:identifier])
+  if @captcha.nil?
+    throw :halt, [404, "Image not found"]
+  end
   send_data(@captcha.image, :filename => 'captcha.png', :type => 'image/png', :disposition => 'inline')
 end
 
 get '/captcha/:identifier/:answer' do
   @captcha = RestfulCaptcha::Captcha.load(params[:identifier])
 
+  if @captcha.nil?
+    throw :halt, [404, "Captcha not found"]
+  end
+
   response = { 
-    "identifier" => CGI::escape(params[:identifier]),
+    "identifier" => URI.escape(params[:identifier]),
     "answer" => params[:answer]
   }
 
