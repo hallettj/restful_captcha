@@ -41,12 +41,21 @@ describe RestfulCaptcha::Captcha do
     @captcha.identifier.should_not be_nil
   end
 
-  it "should escape special characters in its identifier so that it can be placed in a URL"
+  it "should not place any characters in identifiers that might confuse routing" do
+    (@captcha.identifier =~ /^#{Sinatra::Event::URI_CHAR}+$/).should_not be_nil
+  end
 
   it "should be able to reconstruct a CAPTCHA from its identifier" do
     reconstructed = RestfulCaptcha::Captcha.find(@captcha.identifier)
     reconstructed[:text].should == @captcha[:text]
     reconstructed[:secret].should == @captcha[:secret]
+  end
+
+  it "should not be sensitive to case in identifiers" do
+    reconstructed = RestfulCaptcha::Captcha.find(@captcha.identifier.upcase)
+    reconstructed.should == @captcha
+    reconstructed = RestfulCaptcha::Captcha.find(@captcha.identifier.downcase)
+    reconstructed.should == @captcha
   end
 
   it "should be displayable as an image" do

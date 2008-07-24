@@ -50,6 +50,13 @@ module RestfulCaptcha
         raise ArgumentError, "invalid attribute for RestfulCaptcha::Captcha: '#{value.inspect}'"
       end
     end
+
+    def ==(other_captcha)
+      @recipe.each do |k,v|
+        return false if other_captcha[k] != v
+      end
+      return (@secret == other_captcha[:secret])
+    end
     
     private
 
