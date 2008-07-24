@@ -33,7 +33,7 @@ get '/captcha/:identifier/:answer' do
   end
 
   response = { 
-    "identifier" => CGI::escape(params[:identifier]),
+    "identifier" => params[:identifier],
     "answer" => params[:answer]
   }
 

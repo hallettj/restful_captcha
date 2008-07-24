@@ -8,7 +8,7 @@ require 'yaml'
 module RestfulCaptcha
   module Plugin
 
-    CAPTCHA_HOST = "localhost:4567"
+    CAPTCHA_HOST = "captcha.localhost"
 
     def self.included(base)
       base.helper_method :captcha_image_url
