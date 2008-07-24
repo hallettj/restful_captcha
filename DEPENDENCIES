@@ -1,2 +1,4 @@
+activesupport
 crypt
-
+rmagick
+sinatra
