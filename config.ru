@@ -6,6 +6,6 @@ Sinatra::Application.default_options.merge!(
   :env => ENV['RACK_ENV']
 )
 
-require 'captcha'
+require 'restful_captcha'
 
 run Sinatra.application
