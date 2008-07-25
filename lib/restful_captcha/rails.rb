@@ -17,9 +17,8 @@ end
 class ActionController::Base
   include RestfulCaptcha::Rails::ControllerPlugin
 
-#   def self.set_captcha_host(host)
-#     RestfulCaptcha::Rails::Captcha.host = host
-#   end
+  ## TODO: Find a way to move this into the definition for
+  ## ControllerPlugin
   def self.set_captcha_style(options)
     @@captcha_params ||= {}
     @@captcha_params.merge!(options)

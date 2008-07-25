@@ -10,9 +10,20 @@ module RestfulCaptcha
       end
 
       module ClassMethods
+
         def set_captcha_host(host)
           RestfulCaptcha::Rails::Captcha.host = host
         end
+
+#         def self.set_captcha_style(options)
+#           if class_variable_defined(:@@captcha_params)
+#             existing_params = class_variable_get(:@@captcha_params)
+#           else
+#             existing_params = {}
+#           end
+#           class_variable_set(:@@captcha_params, existing_params.merge(options))
+#         end
+        
       end
       
       private
@@ -24,15 +35,11 @@ module RestfulCaptcha
       def reset_captcha
         captcha = Captcha.find_by_attributes(@@captcha_params)
         session[:captcha] = captcha.identifier
+        return captcha
       end
 
       def unset_captcha
         session[:captcha] = nil
-      end
-
-      def verify_captcha(answer)
-        captcha = Captcha.find_by_identifier(session[:captcha])
-        captcha.correct_answer?(answer)
       end
 
     end

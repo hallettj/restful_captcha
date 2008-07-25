@@ -111,4 +111,3 @@ describe Captcha do
   end
 
 end
-
