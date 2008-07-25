@@ -13,7 +13,7 @@ describe 'RestfulCaptcha' do
     @example = RestfulCaptcha::Captcha.new(:text => "foo", :secret => "wibble")
   end
   
-  describe "when a new CAPTCHA is requested" do
+  describe "when a new CAPTCHA is requested by parameters" do
 
     def reconstructed_captcha(response=@response)
       RestfulCaptcha::Captcha.find(response.body)
@@ -66,6 +66,21 @@ describe 'RestfulCaptcha' do
     it "should accept font parameters in the form of a fully qualified X font name" do
       get_it '/captcha?font=-urw-times-medium-i-normal--0-0-0-0-p-0-iso8859-13'
       reconstructed_captcha[:font].should == '-urw-times-medium-i-normal--0-0-0-0-p-0-iso8859-13'
+    end
+
+  end
+
+  describe "when a CAPTCHA is requested by identifer" do
+
+    it "should respond with the same identifier if the CAPTCHA exists" do
+      get_it "/captcha/#{@example.identifier}"
+      @response.status.should == 200
+      @response.body.should == @example.identifier
+    end
+
+    it "should respond with a 'resource not found' error if the CAPTCHA does not exist" do
+      get_it "/captcha/2985729387239487"
+      @response.status.should == 404
     end
 
   end
