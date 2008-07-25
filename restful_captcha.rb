@@ -11,11 +11,29 @@ require 'yaml'
 require 'lib/restful_captcha/image'
 require 'lib/restful_captcha/captcha'
 
+# Finds a captcha that matches the given parameters and returns its
+# identifier in the response body. If no parameters are given,
+# responds with an identifier for a captcha picked at random.
 get '/captcha' do
   @captcha = RestfulCaptcha::Captcha.new(params)
   @captcha.identifier
 end
 
+# Given a captcha identifier, returns the same identifier in the
+# response body with an OK status; or responds with a 'resource not
+# found' error if the captcha cannot be found.
+#
+# This is useful for clients wanting to verify that an identifier is
+# valid.
+get '/captcha/:identifier' do
+  @captcha = RestfulCaptcha::Captcha.find(params[:identifier])
+  if @captcha.nil?
+    throw :halt, [404, "Captcha not found"]
+  end
+  @captcha.identifier
+end
+
+# Given a captcha identifier, returns the captcha's image.
 get '/image/:identifier' do
   @captcha = RestfulCaptcha::Captcha.find(params[:identifier])
   if @captcha.nil?
