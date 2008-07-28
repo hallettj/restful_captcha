@@ -53,11 +53,11 @@ describe Captcha do
   end
 
   it "should have an image_url" do
-    @captcha.image_url.should == "http://captcha.localhost/image/#{@captcha.identifier}"
+    @captcha.image_url.should == "http://captcha.localhost/captcha/#{@captcha.identifier}/image"
   end
 
   it "should have a remote image at its image_url" do
-    url = URI.parse("http://captcha.localhost/image/#{@captcha.identifier}")
+    url = URI.parse(@captcha.image_url)
     res = Net::HTTP.start(url.host, url.port) do |http|
       http.get(url.path)
     end

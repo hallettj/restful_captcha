@@ -41,12 +41,12 @@ module RestfulCaptcha
       end
 
       def image_url
-        "http://#{host}/image/#{@identifier}"
+        captcha_url + '/image'
       end
 
       def answer=(new_answer)
         return @answer if @answer == new_answer
-        path = "/captcha/#{@identifier}/#{CGI::escape(new_answer)}"
+        path = captcha_url + "/#{CGI::escape(new_answer)}"
         res = Net::HTTP.start(server_url.host, server_url.port) do |http|
           http.get(path)
         end
@@ -67,6 +67,10 @@ module RestfulCaptcha
       
       protected
 
+      def captcha_url
+        "http://#{host}/captcha/#{identifier}"
+      end
+
       def host
         self.class.host
       end
@@ -78,7 +82,6 @@ module RestfulCaptcha
         def server_url
           URI.parse("http://#{host}/")
         end
-
 
         def host
           if @@host.blank?

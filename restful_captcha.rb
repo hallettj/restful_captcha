@@ -34,7 +34,7 @@ get '/captcha/:identifier' do
 end
 
 # Given a captcha identifier, returns the captcha's image.
-get '/image/:identifier' do
+get '/captcha/:identifier/image' do
   @captcha = RestfulCaptcha::Captcha.find(params[:identifier])
   if @captcha.nil?
     throw :halt, [404, "Image not found"]
