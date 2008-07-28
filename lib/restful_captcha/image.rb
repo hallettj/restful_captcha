@@ -1,10 +1,12 @@
-# RestfulCaptcha::Image has a single public class method,
-# RestfulCaptcha::Image.build, which is used to build captcha images.
-
 require 'RMagick'
 require 'activesupport'
 
 module RestfulCaptcha
+
+  # == Synopsis
+  #
+  # RestfulCaptcha::Image has a single public class method,
+  # RestfulCaptcha::Image.build, which is used to build captcha images.
   class Image
 
     VALID_OPTIONS = [:text, 

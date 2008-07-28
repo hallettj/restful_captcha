@@ -1,5 +1,13 @@
 module RestfulCaptcha
   module Rails
+    
+    # == Synopsis
+    # 
+    # The methods in this module are available to use anywhere in
+    # template code.
+    #
+    # RestfulCaptcha::Rails::ControllerPlugin also defines some
+    # helpers that are available in template code.
     module ViewPlugin
 
       # Returns an HTML image tag with an href pointing to the image

@@ -1,11 +1,3 @@
-# == Synopsis
-#
-# This fill loads all of the Rails plugin code for RestfulCaptcha and
-# inserts plugin methods into ActionController::Base and ActionView::Base.
-#
-# Simply add a require line that loads this file to your controller to
-# include the Rails plugin in your application.
-
 $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
@@ -18,10 +10,29 @@ require 'rails/captcha'
 require 'rails/view_plugin'
 require 'rails/controller_plugin'
 
+module RestfulCaptcha
+
+  # == Synopsis
+  #
+  # This module contains all of the Rails plugin code for client-side
+  # RestfulCaptcha functionality. It inserts plugin methods into
+  # ActionController::Base and ActionView::Base.
+  #
+  # Simply add this line to your controller to include the Rails
+  # plugin in your application:
+  #     require 'restful_captcha/rails'
+  module Rails
+  end
+end
+
+# ActionView::Base is extended by RestfulCaptcha::Rails. See
+# RestfulCaptcha::Rails::ViewPlugin for details.
 class ActionView::Base
   include RestfulCaptcha::Rails::ViewPlugin
 end
 
+# ActionController::Base is extended by RestfulCaptcha::Rails. See
+# RestfulCaptcha::Rails::ViewPlugin for details.
 class ActionController::Base
   include RestfulCaptcha::Rails::ControllerPlugin
 

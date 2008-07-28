@@ -1,10 +1,12 @@
-# == Synopsis
-#
-# Extends ActionController::Base with methods for retrieving captchas
-# and specifying attributes of the captchas to retrieve.
-
 module RestfulCaptcha
   module Rails
+
+    # == Synopsis
+    #
+    # Extends ActionController::Base with methods for retrieving
+    # captchas and specifying attributes of the captchas to
+    # retrieve. The methods in this module are made available to use
+    # in any controller.
     module ControllerPlugin
       
       def self.included(base)  # :nodoc:
@@ -19,6 +21,9 @@ module RestfulCaptcha
         # Gives RestfulCaptcha::Rails::Captcha a host to use as a
         # RestfulCaptcha server. RestfulCaptcha::Rails::Captcha
         # methods will generally not function until a host is set.
+        #
+        # See ActionController::Base.set_captcha_style for the other
+        # controller class method provided.
         def set_captcha_host(host)
           RestfulCaptcha::Rails::Captcha.host = host
         end
@@ -34,11 +39,13 @@ module RestfulCaptcha
         
       end
       
-      private
+      protected
 
       # Returns the captcha associated with the current user. A new
       # captcha can be associated with the user by calling
       # ActionController::Base#reset_captcha
+      #
+      # This method is also made available for use in template code.
       def captcha
         @captcha ||= Captcha.find_by_identifier(session[:captcha])
       end
@@ -47,6 +54,8 @@ module RestfulCaptcha
       # if the user has already answered, or attempted to answer, a
       # previously associated captcha; or if no captcha has been
       # associated with the user yet.
+      #
+      # This method is also made available for use in template code.
       def reset_captcha
         @captcha = Captcha.find_by_attributes(@@captcha_params)
         session[:captcha] = @captcha.identifier

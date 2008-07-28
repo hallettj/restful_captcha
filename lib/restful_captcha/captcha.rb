@@ -1,15 +1,17 @@
-# RestfulCaptcha::Captcha represents a Captcha. It has text, image
-# properties, and image, and possibly a secret as attributes.
-#
-# Once a Captcha is created, its image can be accessed by calling
-# captcha.image
-
 require 'activesupport'
 require 'crypt/rijndael'
 
 require File.expand_path(File.dirname(__FILE__) + '/../core_extensions.rb')
 
 module RestfulCaptcha
+
+  # == Synopsis
+  #
+  # RestfulCaptcha::Captcha represents a Captcha. It has text, image
+  # properties, and image, and possibly a secret as attributes.
+  #
+  # Once a Captcha is created, its image can be accessed by calling
+  # captcha.image
   class Captcha
 
     # A new Captcha accepts +options+ than define how its image will
