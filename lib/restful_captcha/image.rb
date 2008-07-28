@@ -1,3 +1,6 @@
+# RestfulCaptcha::Image has a single public class method,
+# RestfulCaptcha::Image.build, which is used to build captcha images.
+
 require 'RMagick'
 require 'activesupport'
 
@@ -7,8 +10,19 @@ module RestfulCaptcha
     VALID_OPTIONS = [:text, 
                      :width, :height, 
                      :color, :background_color, :background, 
-                     :font, :font_family, :font_style, :font_weight, :font_size]
+                     :font, :font_family, :font_style, :font_weight, :font_size,
+                     :stroke_width]
     
+    # Builds a captcha image according to the given +options+. The
+    # Options that are accepted are defined by
+    # RestfulCaptcha::Image::VALID_OPTIONS. Specifically, they are:
+    # * +text+ - the text displayed in the captcha image; will be randomly generated if not specified
+    # * +width+, +height+ - dimensions of the image in pixels; defaults to 200x100
+    # * +color+, +background_color+ - accpeted color values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#color_names
+    # * +background+ - used to specify a background texture instead of a solid color; overrides background color if specified; accepted values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#builtin_formats
+    # * +font+, +font_family+, +font_style+, +font_weight+, +font_size+ - font properties; see http://www.imagemagick.org/RMagick/doc/draw.html#font for info
+    # * +stroke_width+ - width of the line that is drawn
+
     def self.build(options)
       options.symbolize_keys!
       options.assert_valid_keys(VALID_OPTIONS)
@@ -59,9 +73,17 @@ module RestfulCaptcha
 
     protected
 
-    ## Draws a wiggly line across the given +image+. This makes it
-    ## difficult for a CAPTCHA breaking bot to identify individual
-    ## letters.
+    # Draws a wiggly line across the given +image+. This makes it
+    # difficult for a CAPTCHA breaking bot to identify individual
+    # letters.
+    #
+    # Required options are:
+    # * +width+ - width of +image+ in pixels
+    # * +height+ - height of +image+ in pixels
+    #
+    # Optional options are:
+    # * +color+ - color of the line that is drawn
+    # * +stroke_width+ - width of the line that is drawn
     def self.draw_angled_line(image, options)
       width = options[:width]
       height = options[:height]

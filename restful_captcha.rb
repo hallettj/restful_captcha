@@ -21,6 +21,7 @@
 # * +color+, +background_color+ - accpeted color values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#color_names
 # * +background+ - used to specify a background texture instead of a solid color; overrides background color if specified; accepted values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#builtin_formats
 # * +font+, +font_family+, +font_style+, +font_weight+, +font_size+ - font properties; see http://www.imagemagick.org/RMagick/doc/draw.html#font for info
+# * +stroke_width+ - width of the line that is drawn
 # * +secret+ - a string to be hidden in the captcha. It will be returned to the client in the event a correct answer is submitted.
 #
 ### /captcha/:identifier
