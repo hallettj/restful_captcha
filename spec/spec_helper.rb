@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../restful_captcha.rb')
+require File.expand_path(File.dirname(__FILE__) + '/../bin/restful_captcha')
 require 'spec'
 require 'spec/interop/test'
 require 'sinatra/test/methods'

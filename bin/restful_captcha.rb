@@ -50,16 +50,12 @@
 # If the given answer is correct, the YAML response also includes the
 # secret string embedded in the captcha, if there is one.
 
-$:.unshift(File.dirname(__FILE__)) unless
-  $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
-
 require 'rubygems'
 require 'sinatra'
 require 'activesupport'
 require 'yaml'
 
-require 'lib/restful_captcha/image'
-require 'lib/restful_captcha/captcha'
+require File.expand_path(File.dirname(__FILE__) + '/../lib/restful_captcha')
 
 get '/captcha' do
   @captcha = RestfulCaptcha::Captcha.new(params)
