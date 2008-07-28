@@ -29,17 +29,18 @@ module RestfulCaptcha
       private
 
       def captcha
-        Captcha.find_by_identifier(session[:captcha])
+        @captcha ||= Captcha.find_by_identifier(session[:captcha])
       end
 
       def reset_captcha
-        captcha = Captcha.find_by_attributes(@@captcha_params)
-        session[:captcha] = captcha.identifier
-        return captcha
+        @captcha = Captcha.find_by_attributes(@@captcha_params)
+        session[:captcha] = @captcha.identifier
+        return @captcha
       end
 
       def unset_captcha
         session[:captcha] = nil
+        @captcha = nil
       end
 
     end

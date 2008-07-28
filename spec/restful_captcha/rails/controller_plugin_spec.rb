@@ -79,13 +79,17 @@ describe ControllerPlugin do
 
     it "should be able to replace the captcha with a new one" do
       Captcha.should_receive(:find_by_attributes).and_return(@other_captcha)
-      Captcha.should_receive(:find_by_identifier).with(@other_captcha.identifier).and_return(@other_captcha)
+      Captcha.should_receive(:find_by_identifier).with(@captcha.identifier).and_return(@captcha)
+      Captcha.stub!(:find_by_identifier).with(@other_captcha.identifier).and_return(@other_captcha)
+      @controller.captcha.should == @captcha
       @controller.reset_captcha.should == @other_captcha
       @controller.captcha.should == @other_captcha
     end
 
     it "should be able to unset the captcha" do
-      Captcha.should_receive(:find_by_identifier).with(nil).and_return(nil)
+      Captcha.should_receive(:find_by_identifier).with(@captcha.identifier).and_return(@captcha)
+      Captcha.stub!(:find_by_identifier).with(nil).and_return(nil)
+      @controller.captcha.should == @captcha
       @controller.unset_captcha
       @controller.captcha.should be_nil
     end
