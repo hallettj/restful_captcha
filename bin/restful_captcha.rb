@@ -18,7 +18,7 @@
 # The parameters that are used are:
 # * +text+ - the text displayed in the captcha image; will be randomly generated if not specified
 # * +width+, +height+ - dimensions of the image in pixels; defaults to 200x100
-# * +color+, +background_color+ - accpeted color values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#color_names
+# * +color+, +background_color+ - accepted color values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#color_names
 # * +background+ - used to specify a background texture instead of a solid color; overrides background color if specified; accepted values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#builtin_formats
 # * +font+, +font_family+, +font_style+, +font_weight+, +font_size+ - font properties; see http://www.imagemagick.org/RMagick/doc/draw.html#font for info
 # * +stroke_width+ - width of the line that is drawn

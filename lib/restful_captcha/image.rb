@@ -20,7 +20,7 @@ module RestfulCaptcha
     # RestfulCaptcha::Image::VALID_OPTIONS. Specifically, they are:
     # * +text+ - the text displayed in the captcha image; will be randomly generated if not specified
     # * +width+, +height+ - dimensions of the image in pixels; defaults to 200x100
-    # * +color+, +background_color+ - accpeted color values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#color_names
+    # * +color+, +background_color+ - accepted color values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#color_names
     # * +background+ - used to specify a background texture instead of a solid color; overrides background color if specified; accepted values are described at http://www.imagemagick.org/RMagick/doc/imusage.html#builtin_formats
     # * +font+, +font_family+, +font_style+, +font_weight+, +font_size+ - font properties; see http://www.imagemagick.org/RMagick/doc/draw.html#font for info
     # * +stroke_width+ - width of the line that is drawn
@@ -34,8 +34,37 @@ module RestfulCaptcha
         raise ArgumentError, "cannot generate a CAPTCHA image without text to display"
       end
 
-      width = options[:width] ? options[:width].to_i : 200
-      height = options[:height] ? options[:height].to_i : 100
+      font_size = options[:font_size].to_i > 0 ? options[:font_size].to_i : 52
+      font_style = case options[:font_style].to_s.downcase
+                   when "normal": Magick::NormalStyle
+                   when "italic": Magick::ItalicStyle
+                   when "oblique": Magick::ObliqueStyle
+                   when "any": Magick::AnyStyle
+                   else
+                     nil
+                   end
+      font_weight = case options[:font_weight].to_s.downcase
+                    when "any": Magick::AnyWeight
+                    when "normal": Magick::NormalWeight
+                    when "bold": Magick::BoldWeight
+                    when "bolder": Magick::BolderWeight
+                    when "lighter": Magick::LighterWeight
+                    else
+                      nil
+                    end
+
+      width = options[:width].to_i
+      height = options[:height].to_i
+
+      # If width and height are not specified, try to set them to
+      # values that will work well based on font size
+      if height < 1
+        height = (font_size * 1.6).round
+      end
+      if width < 1
+        width = ((text.length + 1) * (font_size / 1.6)).round
+      end
+
       color = options[:color] || 'black'
 
       # Set the background texture or color
@@ -55,7 +84,9 @@ module RestfulCaptcha
       ## Draw text
       draw = Magick::Draw.new
       draw.font_family = font_family
-      draw.pointsize = 52
+      draw.pointsize = font_size
+      draw.font_style = font_style if font_style
+      draw.font_weight = font_weight if font_weight
       draw.font_stretch = Magick::UltraCondensedStretch
       draw.gravity = Magick::CenterGravity
       draw.annotate(canvas, 0,0,0,0, text) {
@@ -90,9 +121,9 @@ module RestfulCaptcha
       width = options[:width]
       height = options[:height]
       color = options[:color] || black
-      stroke_width = options[:stroke_width] || 3
+      stroke_width = options[:stroke_width].to_i > 0 ? options[:stroke_width].to_i : (height * 0.05).round
 
-      height_variance = height * 0.10
+      height_variance = height * 0.16
       segment_length = 10.0
       num_segments = (width / segment_length) - 2
       segment_height_variance = (height_variance / num_segments) * 3.0
@@ -134,7 +165,7 @@ module RestfulCaptcha
       draw = Magick::Draw.new
       draw.stroke(color)
       draw.fill_opacity(0)
-      draw.stroke_width(3)
+      draw.stroke_width(stroke_width)
       draw.stroke_linecap('round')
       draw.stroke_linejoin('round')
 
