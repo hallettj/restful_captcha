@@ -6,6 +6,6 @@ Sinatra::Application.default_options.merge!(
   :env => ENV['RACK_ENV']
 )
 
-require File.expand_path(File.dirname(__FILE__) + '/../bin/resful_captcha')
+require File.expand_path(File.dirname(__FILE__) + '/../bin/restful_captcha')
 
 run Sinatra.application
