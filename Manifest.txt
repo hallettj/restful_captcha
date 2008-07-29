@@ -13,8 +13,8 @@ lib/restful_captcha/rails/captcha.rb
 lib/restful_captcha/rails/controller_plugin.rb
 lib/restful_captcha/rails/view_plugin.rb
 spec/core_extensions_spec.rb
-spec/restful_captcha_spec.rb
 spec/spec_helper.rb
+spec/bin/restful_captcha_spec.rb
 spec/restful_captcha/captcha_spec.rb
 spec/restful_captcha/image_spec.rb
 spec/restful_captcha/rails_spec.rb
@@ -22,5 +22,3 @@ spec/restful_captcha/rails_spec_helper.rb
 spec/restful_captcha/rails/captcha_spec.rb
 spec/restful_captcha/rails/controller_plugin_spec.rb
 spec/restful_captcha/rails/view_plugin_spec.rb
-
-

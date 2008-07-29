@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe 'RestfulCaptcha' do
 
@@ -98,6 +98,11 @@ describe 'RestfulCaptcha' do
       @response.headers['Content-Type'].should == 'image/png'
       @response.headers['Content-Transfer-Encoding'].should == 'binary'
       @response.body.should_not be_empty
+    end
+
+    it "should respond with an error if the captcha can't be found" do
+      get_it "/captcha/bad_identifier/image"
+      @response.status.should == 404
     end
 
     it "should preserve parameters encoded in the CAPTCHA identifier" do

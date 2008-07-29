@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../rails_spec_helper')
 
 describe Captcha do
   
-  before :all do
+  before :each do
     Captcha.host = 'captcha.localhost'
   end
 
@@ -14,6 +14,11 @@ describe Captcha do
 
   it "should have a unique identifier" do
     @captcha.identifier.should_not be_nil
+  end
+  
+  it "should raise an error if no RestfulCaptcha host is specified" do
+    Captcha.host = nil
+    lambda { Captcha.find_by_attributes }.should raise_error
   end
 
   describe "when asked to find a captcha given its attributes" do
@@ -32,6 +37,11 @@ describe Captcha do
       captcha = Captcha.find_by_attributes
       captcha.should be_an_instance_of(Captcha)
       captcha.identifier.should_not be_nil
+    end
+
+    it "should return nil if there is an error communicating with the server" do
+      Captcha.host = 'localhost'
+      Captcha.find_by_attributes.should be_nil
     end
 
   end
