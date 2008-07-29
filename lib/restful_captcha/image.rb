@@ -34,7 +34,6 @@ module RestfulCaptcha
         raise ArgumentError, "cannot generate a CAPTCHA image without text to display"
       end
 
-      font_size = options[:font_size].to_i > 0 ? options[:font_size].to_i : 52
       font_style = case options[:font_style].to_s.downcase
                    when "normal": Magick::NormalStyle
                    when "italic": Magick::ItalicStyle
@@ -52,9 +51,28 @@ module RestfulCaptcha
                     else
                       nil
                     end
+      font_size = options[:font_size].to_i
 
       width = options[:width].to_i
       height = options[:height].to_i
+
+      # If none of font_size, height, or width are specified, choose a
+      # default font_size and work out appropriate width and height
+      # values from that
+      if font_size < 1 and height < 1 and width < 1
+        font_size = 52
+        
+      # If font_size is not specified but height is, use a font_size
+      # that will fit well given that height
+      elsif font_size < 1 and height > 0
+        font_size = (height / 1.6).round
+      
+      # Finally, if font_size and height are not set, but width is,
+      # use a font_size that will fit well within the given width
+      # given the length of the text to be displayed
+      elsif font_size < 1 and width > 0
+        font_size = ((width / (text.length + 1)) * 1.6).round
+      end
 
       # If width and height are not specified, try to set them to
       # values that will work well based on font size
@@ -126,7 +144,7 @@ module RestfulCaptcha
       height_variance = height * 0.16
       segment_length = 10.0
       num_segments = (width / segment_length) - 2
-      segment_height_variance = (height_variance / num_segments) * 3.0
+      segment_height_variance = (height_variance / num_segments)
 
       left_end = [segment_length, (height / 2.0) + rand(height_variance * 2.0) - height_variance]
       right_end = [width - segment_length,
