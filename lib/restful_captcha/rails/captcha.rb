@@ -25,14 +25,20 @@ module RestfulCaptcha
       # returned.
       def self.find_by_attributes(options={})
         path = "/captcha?#{options.map { |k,v| "#{k}=#{v}" }.join('&') }"
-        res = Net::HTTP.start(server_url.host, server_url.port) do |http|
-          http.get(path)
+        begin
+          res = Net::HTTP.start(server_url.host, server_url.port) do |http|
+            http.get(path)
+          end
+        rescue => err
+          raise ServerError, "#{err.class.name}: #{err.message}"
         end
         case res
         when Net::HTTPSuccess
           return new(res.body)
-        else
+        when Net::HTTPNotFound
           return nil
+        else
+          raise ServerError, res.message 
         end
       end
 
@@ -40,8 +46,12 @@ module RestfulCaptcha
       # such captcha, returns +nil+.
       def self.find_by_identifier(identifier)
         return nil if identifier.blank?
-        res = Net::HTTP.start(server_url.host, server_url.port) do |http|
-          http.get("/captcha/#{identifier}")
+        begin
+          res = Net::HTTP.start(server_url.host, server_url.port) do |http|
+            http.get("/captcha/#{identifier}")
+          end
+        rescue => err
+          raise ServerError, "#{err.class.name}: #{err.message}"
         end
         case res
         when Net::HTTPSuccess

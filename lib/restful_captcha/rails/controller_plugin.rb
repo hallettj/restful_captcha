@@ -57,7 +57,7 @@ module RestfulCaptcha
       #
       # This method is also made available for use in template code.
       def reset_captcha
-        @captcha = Captcha.find_by_attributes(@@captcha_params)
+        @captcha = Captcha.find_by_attributes(@@captcha_params || {})
         session[:captcha] = @captcha.identifier
         return @captcha
       end
