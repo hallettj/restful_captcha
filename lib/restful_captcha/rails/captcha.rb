@@ -10,6 +10,10 @@ module RestfulCaptcha
     class Captcha
       @@host = nil
 
+      class ServerError < StandardError
+
+      end
+
       attr_reader :identifier, :answer
 
       def initialize(identifier)  # :nodoc:
@@ -42,8 +46,10 @@ module RestfulCaptcha
         case res
         when Net::HTTPSuccess
           return new(identifier)
+        when Net::HTTPNotFound
+          return nil 
         else
-          return nil
+          raise ServerError, res.message
         end
       end
 
